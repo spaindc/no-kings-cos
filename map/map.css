@@ -12,6 +12,7 @@
   --stage: #3d3a35;
   --art: #c2185b;
   --medic: #ffffff;
+  --medic-cross: #d32f2f;
   --training: #1b7f86;
   --data: #455a64;
   --restrooms: #7c8a96;
@@ -77,11 +78,11 @@ h1 {
   dominant-baseline: central;
   fill: #fff;
 }
-.labels .num { font-size: 17px; }
-.labels .big { font-size: 22px; }
-.labels .feat { font-size: 11px; font-weight: 700; }
-.labels .feat.restrooms { font-size: 9px; }
-.labels .dark { fill: var(--ink); }
+.labels .table-label { font-size: 18px; }
+.labels .table-label.big { font-size: 24px; }
+.labels .feat-label { font-size: 12px; }
+.labels .feat-label.feat-restrooms { font-size: 11px; }
+.labels .feat-label.feat-medic { font-size: 26px; fill: var(--medic-cross); }
 
 .leaflet-popup-content { margin: 0.8rem 1rem; font-size: 0.95rem; }
 .leaflet-popup-content h2 { margin: 0 0 0.25rem; font-size: 1.05rem; line-height: 1.25; }
@@ -125,13 +126,28 @@ h1 {
 
 .legend li.gap { margin-top: 0.55rem; }
 
-.chip.info { background: var(--info); }
-.chip.org { background: var(--org); }
-.chip.ballot { background: var(--ballot); }
-.chip.aid { background: var(--aid); }
-.chip.stage { background: var(--stage); }
-.chip.art { background: var(--art); }
-.chip.medic { background: var(--medic); border: 2px solid #d32f2f; }
-.chip.training { background: var(--training); }
-.chip.data { background: var(--data); }
-.chip.restrooms { background: var(--restrooms); }
+/* Spot colors: one variable per category or feature, used by the map shapes and the legend chips.
+   Map shapes are SVG (fill/stroke); chips are HTML (background). */
+.cat-info { --c: var(--info); }
+.cat-org { --c: var(--org); }
+.cat-ballot { --c: var(--ballot); }
+.cat-aid { --c: var(--aid); }
+.feat-stage { --c: var(--stage); }
+.feat-art { --c: var(--art); }
+.feat-medic { --c: var(--medic); --edge: var(--medic-cross); }
+.feat-training { --c: var(--training); }
+.feat-data { --c: var(--data); }
+.feat-restrooms { --c: var(--restrooms); }
+
+.chip { background: var(--c); }
+.chip.feat-medic { border: 2px solid var(--edge); }
+
+/* Map shapes. Leaflet writes its own default colors as SVG attributes; these rules override them. */
+path.booth, path.feature {
+  fill: var(--c);
+  fill-opacity: 1;
+  stroke: var(--edge, #fff);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+path.feat-medic { stroke-width: 2.5; }

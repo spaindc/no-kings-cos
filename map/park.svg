@@ -206,9 +206,8 @@
   <path d="M1615.6,720.6L1649.2,720.1L1690.3,719.9"/>
   <path d="M1197.8,-62.1L1198.5,21.5"/>
 </g>
-<g id="Park-buildings" inkscape:groupmode="layer" inkscape:label="Park buildings (Hub, bandshell, Story Coffee)" fill="#d9cfbd" stroke="#b7aa93" stroke-width="2">
+<g id="Park-buildings" inkscape:groupmode="layer" inkscape:label="Park buildings (Hub, Story Coffee; the bandshell is the stage spot in map/layout.js)" fill="#d9cfbd" stroke="#b7aa93" stroke-width="2">
   <path d="M399.3,108.2L400.2,155.6L587.7,152.1L586.8,105.7L561.4,106.1L560.8,79.6L430.6,82.2L431.1,107.7L399.3,108.2Z"/>
-  <path d="M447.1,829.1L545.4,827.6L545.8,852.7L528.9,852.9L529.6,905.6L462.6,906.6L461.8,855.4L447.5,855.6L447.1,829.1Z"/>
   <path d="M455.4,918.5L523.3,915.8L524.7,951.8L456.8,954.5Z"/>
 </g>
 <g id="Place-labels" inkscape:groupmode="layer" inkscape:label="Place labels" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" text-anchor="middle" font-size="17" font-weight="600" fill="#6b6456">

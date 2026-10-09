@@ -8,12 +8,14 @@
   ];
   const BACKUP = new URL('backup.csv', document.currentScript.src).href;
 
+  // `sheet` is the Category value in the sheet (any case, extra spaces ignored). Unknown values become `org`.
   const CATEGORIES = {
-    'info': 'info',
-    'org': 'org',
-    'ballot measures': 'ballot',
-    'mutual aid': 'aid',
+    info: { sheet: 'info', label: 'Info booth', legend: 'Info booths' },
+    org: { sheet: 'org', label: 'Group', legend: 'Groups' },
+    ballot: { sheet: 'ballot measures', label: 'Ballot measures', legend: 'Ballot measures' },
+    aid: { sheet: 'mutual aid', label: 'Mutual aid', legend: 'Mutual aid' },
   };
+  const BY_SHEET = Object.fromEntries(Object.entries(CATEGORIES).map(([k, c]) => [c.sheet, k]));
 
   const clean = s => String(s ?? '').replace(/\s+/g, ' ').trim();
   const key = s => clean(s).toLowerCase();
@@ -62,7 +64,7 @@
         name,
         description: get(r, c.description),
         website,
-        category: CATEGORIES[key(get(r, c.category))] || 'org',
+        category: BY_SHEET[key(get(r, c.category))] || 'org',
       });
     }
     return groups;
@@ -86,5 +88,5 @@
     return { groups: toGroups(await fetchCSV(BACKUP)), source: 'backup', at: new Date() };
   }
 
-  window.NoKingsData = { loadGroups };
+  window.NoKingsData = { loadGroups, parse: toGroups, CATEGORIES, SOURCES };
 })();

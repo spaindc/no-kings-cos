@@ -1,72 +1,79 @@
-// Where everything sits on the map. Coordinates are pixels in the 977x1024 reference photo of the
-// marked-up park (the same grid park.svg is drawn in): x to the right, y down. Sizes are in the same
-// pixels, about 7 per meter. r is rotation in degrees, clockwise.
+// Where everything sits on the map: shapes only, no colors or styling (those live in map.css).
+// Coordinates are the same as park.svg: x to the right, y down, about 7 per meter.
+// Each spot is a polygon (`points`); its number or name is drawn at `label` (default: the middle).
+// Spots keep about 4 clear of path edges: main paths are 24 wide, so a spot's edge sits 16-17 from a
+// path's centerline. `building: true` marks a spot that is a real building (the bandshell), which may touch paths.
+// Check the layout after any change: node private/work/check.mjs
 (function () {
-  const STD = 30;
-  const GRID = 2.2; // the street grid is turned slightly from north
+  const PLAZA = [490, 515.3]; // where the four diagonals cross
+  const LONG = 44;            // regular table, along the path
+  const DEEP = 32;            // regular table, away from the path
+  const OFF = 12 + 5 + DEEP / 2;
 
-  const PLAZA = [490, 515];
-  const NE_PATH = -42.6;
-  const SE_PATH = 47.2;
-
-  // A spot t pixels along a path from the plaza, `side` pixels off it (positive = to the right of travel).
-  function along(angle, t, side) {
-    const a = angle * Math.PI / 180;
-    return [
-      PLAZA[0] + t * Math.cos(a) - side * Math.sin(a),
-      PLAZA[1] + t * Math.sin(a) + side * Math.cos(a),
-    ];
+  function rect(cx, cy, w, h, deg = 0) {
+    const a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    return [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]]
+      .map(([dx, dy]) => [cx + dx * c - dy * s, cy + dx * s + dy * c]);
   }
-  const northEdge = x => [x, 64.5 + (x - 193.6) * 0.0363 - 30];
-  const eastEdge = y => [947.4 - (y - 178.9) * 0.042 - 30, y];
+
+  // A regular table t along a diagonal from the plaza, on one side of it (+1 = right of travel, -1 = left).
+  function onDiagonal(deg, t, side) {
+    const a = deg * Math.PI / 180;
+    const x = PLAZA[0] + t * Math.cos(a) - side * OFF * Math.sin(a);
+    const y = PLAZA[1] + t * Math.sin(a) + side * OFF * Math.cos(a);
+    return { points: rect(x, y, LONG, DEEP, deg) };
+  }
+  const NE = -45, SE = 45;
+
+  const EAST_X = 933 - OFF;   // Nevada-side walk
+  const NORTH_Y = 75.5 - OFF; // Platte-side walk
+  const eastEdge = y => ({ points: rect(EAST_X, y, DEEP, LONG) });
+  const northEdge = x => ({ points: rect(x, NORTH_Y, LONG, DEEP) });
 
   const tables = {};
-  const put = (n, [x, y], r, w = STD, h = STD) => { tables[n] = { x, y, w, h, r }; };
 
-  put(1, [447, 528], GRID, 52, 48);
-  put(2, [512, 540], GRID, 52, 48);
+  // Info booths: matching triangles in the west and east wedges of the plaza.
+  tables[1] = { big: true, points: [[467.4, 515.3], [415, 462.9], [415, 567.7]] };
+  tables[2] = { big: true, points: [[512.6, 515.3], [565, 462.9], [565, 567.7]] };
 
-  // Southeast path: 3-6 on the east side, 7-11 on the west side.
-  put(3, along(SE_PATH, 205, -36), SE_PATH);
-  put(4, along(SE_PATH, 299, -36), SE_PATH);
-  put(5, along(SE_PATH, 340, -36), SE_PATH);
-  put(6, along(SE_PATH, 417, -36), SE_PATH);
-  [7, 8, 9, 10, 11].forEach((n, i) => put(n, along(SE_PATH, 272 + i * 50, 30), SE_PATH));
+  // Southeast diagonal: 3-6 on the east side, 7-11 on the west side.
+  [[3, 150], [4, 255], [5, 303], [6, 405]].forEach(([n, t]) => { tables[n] = onDiagonal(SE, t, -1); });
+  [7, 8, 9, 10, 11].forEach((n, i) => { tables[n] = onDiagonal(SE, 196 + i * 66, 1); });
 
   // East edge along Nevada, south to north.
-  put(12, eastEdge(660), GRID);
-  put(13, eastEdge(610), GRID);
-  put(14, eastEdge(515), GRID);
-  put(15, eastEdge(377), GRID);
-  put(16, eastEdge(342), GRID);
-  put(17, eastEdge(280), GRID);
+  [[12, 715], [13, 660], [14, 520], [15, 395], [16, 347], [17, 270]].forEach(([n, y]) => { tables[n] = eastEdge(y); });
 
-  // Northeast path: 18 and 19 on the corners where it meets the spur to Nevada.
-  put(18, [885, 205], NE_PATH, 44, 44);
-  put(19, [838, 128], NE_PATH, 44, 44);
-  // 19 side (northwest of the path): 20 at the top down to 26.
-  [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => put(n, along(NE_PATH, 467 - i * 51.2, -30), NE_PATH));
+  // Northeast corner: 19 between the Platte walk and the diagonal; 18 under the spur to Nevada.
+  tables[19] = { big: true, points: [[812, 91.5], [892.5, 91.5], [812, 172]] };
+  tables[18] = { big: true, points: [[853.2, 176], [917, 176], [917, 215], [814.2, 215]], label: [878, 196] };
+
+  // Northeast diagonal. 19 side (northwest of the path): 20 at the top down to 26.
+  [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 58.2, -1); });
   // 18 side (southeast of the path): 32 at the top down to 27.
-  [27, 28, 29, 30, 31, 32].forEach((n, i) => put(n, along(NE_PATH, 156 + i * 45.6, 30), NE_PATH));
+  [27, 28, 29, 30, 31, 32].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
 
   // North edge, left to right: 36, 35, 34, 33.
-  put(36, northEdge(617), GRID);
-  put(35, northEdge(665), GRID);
-  put(34, northEdge(827), GRID);
-  put(33, northEdge(863), GRID);
+  [[36, 598], [35, 646], [34, 809], [33, 857]].forEach(([n, x]) => { tables[n] = northEdge(x); });
 
   const features = [
-    { id: 'stage', name: 'Bandshell stage', note: 'Performers', x: 484, y: 864, w: 92, h: 70, r: GRID },
-    { id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', x: 370, y: 828, w: 68, h: 92, r: GRID },
-    { id: 'medic', name: 'Medic', note: 'First aid and water', x: 595, y: 720, w: 40, h: 30, r: SE_PATH },
-    { id: 'training', name: 'Petition Signature Training', note: '', x: 462, y: 366, w: 62, h: 58, r: GRID },
-    { id: 'data', name: 'Data center', note: '', x: 880, y: 835, w: 54, h: 84, r: SE_PATH },
-    { id: 'restrooms', name: 'Restrooms', note: '', x: 372, y: 922, w: 56, h: 28, r: GRID },
+    {
+      id: 'stage', name: 'Bandshell stage', note: 'Performers', lines: ['Stage'], building: true,
+      points: [[447, 828], [546, 828], [546, 854], [530, 854], [530, 906], [462, 906], [462, 854], [447, 854]],
+      label: [496, 872],
+    },
+    { id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art'], points: rect(366, 812.5, 96, 155) },
+    { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
+    { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], points: rect(597.2, 721.5, 40, 30, SE) },
+    { id: 'training', name: 'Petition Signature Training', note: '', lines: ['Petition', 'Signature', 'Training'], points: rect(432.5, 354, 85, 68) },
+    {
+      id: 'data', name: 'Data center', note: '', lines: ['Data', 'center'],
+      points: [[838, 776], [915, 776], [915, 880], [879, 880], [838, 839]],
+      label: [878, 822],
+    },
   ];
 
-  // The map is drawn turned by `angle` degrees around `center` so the street grid runs straight
-  // up and across. Positions above stay in photo pixels; map.js and park.svg apply the turn.
-  const square = { angle: -2.25, center: PLAZA };
+  const middle = pts => [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];
+  for (const spot of [...Object.values(tables), ...features]) spot.label = spot.label || middle(spot.points);
 
-  window.NoKingsLayout = { tables, features, square, viewBox: [-120, -120, 1300, 1240], park: [-10, -40, 990, 1030] };
+  window.NoKingsLayout = { tables, features, viewBox: [-120, -120, 1300, 1240], park: [-10, -30, 990, 1030] };
 })();

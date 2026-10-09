@@ -1,33 +1,24 @@
+// Map behavior: draws the spots from layout.js, fills booths from the sheet, popups, legend, refresh.
+// No styling here: everything visual is a class styled in map.css (booth, cat-*, feature, feat-*, label).
 (function () {
-  const { tables, features, square, viewBox, park } = window.NoKingsLayout;
+  const { tables, features, viewBox, park } = window.NoKingsLayout;
+  const { loadGroups, CATEGORIES } = window.NoKingsData;
   const [vx, vy, vw, vh] = viewBox;
   const REFRESH_MS = 2 * 60 * 1000;
 
-  const CATEGORY_NAMES = { info: 'Info booth', org: 'Group', ballot: 'Ballot measures', aid: 'Mutual aid' };
-  const FEATURE_LABELS = {
-    stage: ['Stage'],
-    art: ['Art'],
-    medic: ['+'],
-    training: ['Petition', 'Signature', 'Training'],
-    data: ['Data', 'center'],
-    restrooms: ['Restrooms'],
-  };
-
-  // Leaflet's flat map mode: latitude is -y, longitude is x, in reference-photo pixels.
-  const ll = (x, y) => L.latLng(-y, x);
-  const box = (x, y, w, h) => L.latLngBounds(ll(x, y + h), ll(x + w, y));
-  const css = getComputedStyle(document.documentElement);
-  const color = name => css.getPropertyValue('--' + name).trim();
+  // Leaflet's flat map mode: latitude is -y, longitude is x.
+  const ll = ([x, y]) => L.latLng(-y, x);
+  const box = (x, y, w, h) => L.latLngBounds(ll([x, y + h]), ll([x + w, y]));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   const map = L.map('map', { crs: L.CRS.Simple, zoomSnap: 0.25, zoomDelta: 0.5, minZoom: -4, maxZoom: 2 });
   map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
   map.createPane('park').style.zIndex = 200;
-  map.createPane('booths').style.zIndex = 410;
+  map.createPane('spots').style.zIndex = 410;
   const labelsPane = map.createPane('labels');
   labelsPane.style.zIndex = 420;
   labelsPane.classList.add('labels-pane');
-  const renderer = L.svg({ pane: 'booths', padding: 0.5 });
+  const renderer = L.svg({ pane: 'spots', padding: 0.5 });
 
   L.imageOverlay('park.svg', box(vx, vy, vw, vh), {
     pane: 'park',
@@ -44,21 +35,9 @@
   labelsSvg.classList.add('labels');
   L.svgOverlay(labelsSvg, box(vx, vy, vw, vh), { pane: 'labels', interactive: false }).addTo(map);
 
-  // Turn a photo-pixel spot into its squared-up map position.
-  function sq({ x, y, r = 0 }) {
-    const a = square.angle * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
-    const [cx, cy] = square.center, dx = x - cx, dy = y - cy;
-    return { x: cx + dx * c - dy * s, y: cy + dx * s + dy * c, r: r + square.angle };
-  }
+  const spotLayer = (spot, className) => L.polygon(spot.points.map(ll), { renderer, className });
 
-  function corners(spot) {
-    const { x, y, r } = sq(spot), { w, h } = spot;
-    const a = r * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
-    return [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]]
-      .map(([dx, dy]) => ll(x + dx * c - dy * s, y + dx * s + dy * c));
-  }
-
-  function textLines(x, y, lines, cls, lineHeight) {
+  function textLines([x, y], lines, cls, lineHeight = 12) {
     const top = y - (lines.length - 1) * lineHeight / 2;
     return lines.map((line, i) => `<text class="${cls}" x="${x}" y="${top + i * lineHeight}">${esc(line)}</text>`).join('');
   }
@@ -66,19 +45,10 @@
   // Fixed features: always shown, drawn once.
   let featureLabels = '';
   for (const f of features) {
-    const medic = f.id === 'medic';
-    L.polygon(corners(f), {
-      renderer,
-      color: medic ? '#d32f2f' : '#fff',
-      weight: medic ? 2.5 : 1.5,
-      fillColor: color(f.id),
-      fillOpacity: 1,
-    }).bindPopup(`<h2>${esc(f.name)}</h2>${f.note ? `<p>${esc(f.note)}</p>` : ''}`).addTo(map);
-    const lines = FEATURE_LABELS[f.id] || [f.name];
-    const p = sq(f);
-    featureLabels += medic
-      ? `<text class="big" style="fill:#d32f2f" x="${p.x}" y="${p.y}">+</text>`
-      : textLines(p.x, p.y, lines, `feat ${f.id}`, 12);
+    spotLayer(f, `feature feat-${f.id}`)
+      .bindPopup(`<h2>${esc(f.name)}</h2>${f.note ? `<p>${esc(f.note)}</p>` : ''}`)
+      .addTo(map);
+    featureLabels += textLines(f.label, f.lines || [f.name], `label feat-label feat-${f.id}`);
   }
 
   // Booths from the sheet: redrawn whenever the sheet changes.
@@ -90,7 +60,7 @@
     let host = '';
     try { host = new URL(g.website).hostname.replace(/^www\./, ''); } catch { /* no website */ }
     return `<h2>${esc(g.name)}</h2>`
-      + `<p class="pop-meta"><span class="chip ${g.category}"></span>Table ${esc(g.table)} &middot; ${CATEGORY_NAMES[g.category]}</p>`
+      + `<p class="pop-meta"><span class="chip cat-${g.category}"></span>Table ${esc(g.table)} &middot; ${esc(CATEGORIES[g.category].label)}</p>`
       + (g.description ? `<p>${esc(g.description)}</p>` : '')
       + (host ? `<p><a href="${esc(g.website)}" target="_blank" rel="noopener">${esc(host)}</a></p>` : '');
   }
@@ -106,12 +76,8 @@
         continue;
       }
       if (boothByTable[g.table]) console.warn(`Table ${g.table} is listed twice; showing ${g.name}`);
-      const c = color(g.category);
-      boothByTable[g.table] = L.polygon(corners(spot), {
-        renderer, color: '#fff', weight: 1.5, fillColor: c, fillOpacity: 1,
-      }).bindPopup(popupHtml(g)).addTo(booths);
-      const p = sq(spot);
-      labels += `<text class="${spot.w > 40 ? 'big' : 'num'}" x="${p.x}" y="${p.y}">${esc(g.table)}</text>`;
+      boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupHtml(g)).addTo(booths);
+      labels += textLines(spot.label, [g.table], `label table-label${spot.big ? ' big' : ''}`);
     }
     labelsSvg.innerHTML = featureLabels + labels;
   }
@@ -122,7 +88,7 @@
   async function refresh() {
     lastLoad = Date.now();
     try {
-      const { groups, source, at } = await window.NoKingsData.loadGroups();
+      const { groups, source, at } = await loadGroups();
       const data = JSON.stringify(groups);
       if (data !== lastData) {
         lastData = data;
@@ -153,8 +119,8 @@
     el.open = window.innerWidth >= 700;
     const item = (cls, text, extra = '') => `<li class="${extra}"><span class="chip ${cls}"></span>${esc(text)}</li>`;
     el.innerHTML = '<summary>Legend</summary><ul>'
-      + item('info', 'Info booths') + item('org', 'Groups') + item('ballot', 'Ballot measures') + item('aid', 'Mutual aid')
-      + features.map((f, i) => item(f.id, f.name, i === 0 ? 'gap' : '')).join('')
+      + Object.entries(CATEGORIES).map(([key, c]) => item(`cat-${key}`, c.legend)).join('')
+      + features.map((f, i) => item(`feat-${f.id}`, f.name, i === 0 ? 'gap' : '')).join('')
       + '</ul>';
     L.DomEvent.disableClickPropagation(el);
     L.DomEvent.disableScrollPropagation(el);
