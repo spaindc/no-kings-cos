@@ -62,7 +62,8 @@
     return `<h2>${esc(g.name)}</h2>`
       + `<p class="pop-meta"><span class="chip cat-${g.category}"></span>Table ${esc(g.table)} &middot; ${esc(CATEGORIES[g.category].label)}</p>`
       + (g.description ? `<p>${esc(g.description)}</p>` : '')
-      + (host ? `<p><a href="${esc(g.website)}" target="_blank" rel="noopener">${esc(host)}</a></p>` : '');
+      + (host ? `<p><a href="${esc(g.website)}" target="_blank" rel="noopener">${esc(host)}</a></p>` : '')
+      + `<p><a href="../groups/#table-${encodeURIComponent(g.table)}">About this group</a></p>`;
   }
 
   function drawBooths(groups) {

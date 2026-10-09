@@ -54,6 +54,11 @@ h1 {
   color: var(--accent);
 }
 
+header .jump {
+  font-weight: 600;
+  color: var(--accent);
+}
+
 .status {
   margin: 0 0 0 auto;
   font-size: 0.8rem;

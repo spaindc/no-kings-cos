@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Groups — No Kings: Vote Early, Colorado Springs</title>
+  <meta name="description" content="Organizations tabling at Acacia Park for No Kings: Vote Early, October 17, 2026, with links to their websites and spots on the map.">
+  <link rel="stylesheet" href="groups.css?v=1">
+</head>
+<body>
+  <header>
+    <a class="home" href="../">No Kings: Vote Early</a>
+    <h1>Groups</h1>
+    <a class="jump" href="../map/">Map</a>
+    <p id="status" class="status">Loading groups…</p>
+  </header>
+
+  <main>
+    <p class="lead">Organizations tabling at Acacia Park.</p>
+
+    <div class="tools">
+      <label class="search">
+        Search
+        <input id="q" type="search" autocomplete="off" placeholder="Name, table number, or description">
+      </label>
+      <div class="sort" role="group" aria-label="Sort by">
+        <span class="sort-label">Sort</span>
+        <button type="button" data-sort="table" aria-pressed="true">Table number</button>
+        <button type="button" data-sort="name" aria-pressed="false">Name</button>
+      </div>
+    </div>
+
+    <p id="count" class="count"></p>
+    <ul id="list"></ul>
+  </main>
+
+  <script src="../data.js?v=1"></script>
+  <script src="groups.js?v=1"></script>
+</body>
+</html>
