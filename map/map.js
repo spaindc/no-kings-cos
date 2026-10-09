@@ -20,7 +20,7 @@
   labelsPane.classList.add('labels-pane');
   const renderer = L.svg({ pane: 'spots', padding: 0.5 });
 
-  L.imageOverlay('park.svg', box(vx, vy, vw, vh), {
+  L.imageOverlay('park.svg' + new URL(document.currentScript.src).search, box(vx, vy, vw, vh), {
     pane: 'park',
     attribution: 'Park drawing from &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
