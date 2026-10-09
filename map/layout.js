@@ -50,11 +50,11 @@
 
   // Northeast diagonal. 19 side (northwest of the path): 20 at the top down to 26.
   [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 54, -1); });
-  // 18 side (southeast of the path): 32 at the top down to 27.
-  [27, 28, 29, 30, 31, 32].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
+  // 18 side (southeast of the path): 30 at the top down to 27. The old 31 and 32 spots are the mutual aid area.
+  [27, 28, 29, 30].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
 
-  // North edge, left to right: 36, 35, 34, 33.
-  [[36, 598], [35, 646], [34, 809], [33, 857]].forEach(([n, x]) => { tables[n] = northEdge(x); });
+  // North edge, left to right: 34, 33, 32, 31. Same ground as the old 36, 35, 34, 33.
+  [[34, 598], [33, 646], [32, 809], [31, 857]].forEach(([n, x]) => { tables[n] = northEdge(x); });
 
   const features = [
     {
@@ -62,10 +62,20 @@
       points: [[447, 828], [546, 828], [546, 854], [530, 854], [530, 906], [462, 906], [462, 854], [447, 854]],
       label: [496, 872],
     },
-    { id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art'], points: rect(366, 812.5, 96, 155) },
+    {
+      id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art'],
+      points: [[318, 738], [412, 738], [412, 888], [280, 888], [310, 820]],
+    },
+    {
+      id: 'aid', name: 'Mutual aid', note: 'Collection point. Migra Watch is at table 19.', lines: ['Mutual', 'aid'],
+      points: [[736.8, 292.6], [809.6, 219.7], [843.6, 253.7], [770.7, 326.5]],
+    },
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
-    { id: 'training', name: 'Petition Signature Training', note: '', lines: ['Petition', 'Signature', 'Training'], points: rect(432.5, 354, 85, 68) },
+    {
+      id: 'training', name: 'Petition Signature Training', note: '', lines: ['Petition', 'Signature', 'Training'],
+      points: [[348, 308], [470, 308], [470, 414], [416, 414]],
+    },
     {
       id: 'data', name: 'Data center', note: '', lines: ['Data', 'center'],
       points: [[838, 776], [915, 776], [915, 880], [879, 880], [838, 839]],

@@ -7,7 +7,7 @@
   <meta name="description" content="Map of group tables, the stage, art projects, medic and restrooms at Acacia Park for No Kings: Vote Early, October 17, 2026.">
   <meta name="theme-color" content="#0e00a3">
   <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="map.css?v=7">
+  <link rel="stylesheet" href="map.css?v=8">
 </head>
 <body>
   <header>
@@ -21,6 +21,24 @@
   <footer>
     <p id="status" class="status">Loading groups…</p>
   </footer>
+
+  <svg id="place-icons" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0">
+    <symbol id="icon-art" viewBox="0 0 24 24">
+      <path fill="currentColor" fill-rule="evenodd" d="M12 3.2c-4.6 0-7.8 2.8-7.8 6.6 0 2.4 1.5 4 3.4 4 1 0 1.5-.6 1.5-1.3s-.6-1.2-.6-2c0-2.4 2-4 5-4 1.7 0 2.6.8 2.6 1.9 0 2-1.6 3.5-1.6 5.8 0 1.2.9 1.7 1.9 1.7 2.2 0 4.4-2 4.4-5.2 0-4.6-3.6-7.5-8.8-7.5zM8.1 8.5a1.15 1.15 0 1 1 0 .01M12 6.9a1.15 1.15 0 1 1 0 .01M15.6 8.6a1.15 1.15 0 1 1 0 .01"/>
+    </symbol>
+    <symbol id="icon-stage" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M10.2 16.8a2.6 2.6 0 1 1-2.2-2.55V5.4l9.2-1.8v3.1l-7 1.4v8.7z"/>
+    </symbol>
+    <symbol id="icon-training" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M14.6 3.2 20.8 9.4 11.2 19H5v-6.2l9.6-9.6zm-7.4 11.6h2l7.6-7.6-2-2-7.6 7.6v2z"/>
+    </symbol>
+    <symbol id="icon-data" viewBox="0 0 24 24">
+      <path fill="currentColor" fill-rule="evenodd" d="M4 4.5h16v6.2H4V4.5zm2.2 2.1h2.2v2H6.2v-2zM4 13.3h16v6.2H4v-6.2zm2.2 2.1h2.2v2H6.2v-2z"/>
+    </symbol>
+    <symbol id="icon-aid" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 19.6s-6.4-4-6.4-8.3C5.6 8.4 7.4 6.8 9.4 6.8c1.2 0 2.1.6 2.6 1.5.5-.9 1.4-1.5 2.6-1.5 2 0 3.8 1.6 3.8 4.5 0 4.3-6.4 8.3-6.4 8.3z"/>
+    </symbol>
+  </svg>
 
   <template id="booth-popup">
     <div class="pop">
@@ -39,7 +57,7 @@
 
   <script src="../vendor/leaflet/leaflet.js"></script>
   <script src="../data.js?v=1"></script>
-  <script src="layout.js?v=2"></script>
-  <script src="map.js?v=8"></script>
+  <script src="layout.js?v=3"></script>
+  <script src="map.js?v=9"></script>
 </body>
 </html>

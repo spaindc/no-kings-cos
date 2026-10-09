@@ -30,6 +30,8 @@
   map.fitBounds(parkBox);
   map.setMinZoom(map.getZoom() - 0.5);
   map.setMaxBounds(box(vx, vy, vw, vh));
+  // Opening frame is the part of the park with the tables, stage, and the City Hall arrow.
+  map.fitBounds(box(240, 10, 930, 1000), { padding: [12, 12] });
 
   const labelsSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   labelsSvg.setAttribute('viewBox', viewBox.join(' '));
@@ -43,13 +45,27 @@
     return lines.map((line, i) => `<text class="${cls}" x="${x}" y="${top + i * lineHeight}">${esc(line)}</text>`).join('');
   }
 
+  // A named place with an icon in the sprite sits the mark above its words.
+  function featureLabel(f) {
+    const lines = f.lines || [f.name];
+    const cls = `label feat-label feat-${f.id}`;
+    if (!document.getElementById('icon-' + f.id)) return textLines(f.label, lines, cls);
+    const [x, y] = f.label;
+    const size = 24;
+    const gap = 3;
+    const textH = (lines.length - 1) * 12;
+    const top = y - (size + gap + textH) / 2;
+    return `<use href="#icon-${f.id}" x="${x - size / 2}" y="${top}" width="${size}" height="${size}" class="place-icon"/>`
+      + textLines([x, top + size + gap + textH / 2], lines, cls);
+  }
+
   // Fixed features: always shown, drawn once.
   let featureLabels = '';
   for (const f of features) {
     spotLayer(f, `feature feat-${f.id}`)
       .bindPopup(`<h2>${esc(f.name)}</h2>${f.note ? `<p>${esc(f.note)}</p>` : ''}`)
       .addTo(map);
-    featureLabels += textLines(f.label, f.lines || [f.name], `label feat-label feat-${f.id}`);
+    featureLabels += featureLabel(f);
   }
 
   // Booths from the sheet: redrawn whenever the sheet changes.
@@ -114,6 +130,7 @@
       if (data !== lastData) {
         lastData = data;
         drawBooths(groups);
+        fillLegend(groups);
       }
       const time = at.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
       status.textContent = source === 'live' ? `Updated ${time}` : `Showing saved list (couldn't reach the sheet, ${time})`;
@@ -135,17 +152,25 @@
   }
 
   const legend = L.control({ position: 'bottomleft' });
-  legend.onAdd = () => {
-    const el = L.DomUtil.create('details', 'legend');
-    el.open = window.innerWidth >= 700;
+  let legendEl;
+  function fillLegend(groups) {
+    const used = groups ? new Set(groups.map(g => g.category)) : null;
+    const cats = Object.entries(CATEGORIES).filter(([key]) => !used || used.has(key));
     const item = (cls, text, extra = '') => `<li class="${extra}"><span class="chip ${cls}"></span>${esc(text)}</li>`;
-    el.innerHTML = '<summary>Legend</summary><ul>'
-      + Object.entries(CATEGORIES).map(([key, c]) => item(`cat-${key}`, c.legend)).join('')
+    const open = legendEl.open;
+    legendEl.innerHTML = '<summary>Legend</summary><ul>'
+      + cats.map(([key, c]) => item(`cat-${key}`, c.legend)).join('')
       + features.map((f, i) => item(`feat-${f.id}`, f.name, i === 0 ? 'gap' : '')).join('')
       + '</ul>';
-    L.DomEvent.disableClickPropagation(el);
-    L.DomEvent.disableScrollPropagation(el);
-    return el;
+    legendEl.open = open;
+  }
+  legend.onAdd = () => {
+    legendEl = L.DomUtil.create('details', 'legend');
+    legendEl.open = window.innerWidth >= 700;
+    fillLegend(null);
+    L.DomEvent.disableClickPropagation(legendEl);
+    L.DomEvent.disableScrollPropagation(legendEl);
+    return legendEl;
   };
   legend.addTo(map);
 

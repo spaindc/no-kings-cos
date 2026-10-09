@@ -7,7 +7,7 @@
   --info: #c41212;
   --org: #0e00a3;
   --ballot: #6d28a8;
-  --aid: #a33b08;
+  --aid: #ff7a00;
 
   --stage: #3d3a35;
   --art: #c2185b;
@@ -102,10 +102,11 @@ a:focus-visible {
 .labels .table-label { font-size: 20px; }
 .labels .table-label.big { font-size: 26px; }
 .labels .feat-label {
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+.labels .place-icon { color: #fff; }
 .labels .feat-label.feat-restrooms { font-size: 9px; letter-spacing: 0; }
 .labels .feat-label.feat-medic {
   font-size: 30px;
@@ -234,6 +235,7 @@ a:focus-visible {
 .cat-aid { --c: var(--aid); }
 .feat-stage { --c: var(--stage); }
 .feat-art { --c: var(--art); }
+.feat-aid { --c: var(--aid); }
 .feat-medic { --c: var(--medic); --edge: var(--medic-cross); }
 .feat-training { --c: var(--training); }
 .feat-data { --c: var(--data); }
@@ -253,4 +255,15 @@ path.booth, path.feature {
   stroke-linecap: round;
   filter: drop-shadow(0 1.5px 0 rgba(28, 22, 12, 0.4));
 }
+path.feature { stroke: var(--yellow); stroke-width: 3.5; }
 path.feat-medic { stroke: var(--edge); stroke-width: 2.5; }
+
+.leaflet-control-attribution {
+  font-size: 10px;
+  line-height: 1.2;
+  padding: 0 4px 1px;
+  max-width: 14em;
+}
+@media (max-width: 700px) {
+  .leaflet-bottom.leaflet-left .legend { margin-bottom: 2.6rem; }
+}
