@@ -5,10 +5,10 @@
   --muted: #5a5a5a;
   --line: #e4ddd0;
 
-  --info: #b3261e;
-  --org: #2f5d8a;
-  --ballot: #6b3fa0;
-  --aid: #d9822b;
+  --info: #c41212;
+  --org: #0e00a3;
+  --ballot: #6d28a8;
+  --aid: #a33b08;
 }
 
 * { box-sizing: border-box; }
