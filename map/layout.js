@@ -76,5 +76,51 @@
   const middle = pts => [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];
   for (const spot of [...Object.values(tables), ...features]) spot.label = spot.label || middle(spot.points);
 
+  // Round convex corners inward. Straight edges stay put, so a spot does not move.
+  // Reflex corners (the bandshell's steps) are left sharp so the outline cannot grow.
+  function roundCorners(points, radius) {
+    const n = points.length;
+    let area = 0;
+    for (let i = 0; i < n; i++) area += points[i][0] * points[(i + 1) % n][1] - points[(i + 1) % n][0] * points[i][1];
+    const clockwise = area > 0;
+    const out = [];
+    const steps = 4;
+    for (let i = 0; i < n; i++) {
+      const prev = points[(i + n - 1) % n], curr = points[i], next = points[(i + 1) % n];
+      const ix = curr[0] - prev[0], iy = curr[1] - prev[1];
+      const ox = next[0] - curr[0], oy = next[1] - curr[1];
+      const li = Math.hypot(ix, iy), lo = Math.hypot(ox, oy);
+      const turn = ix * oy - iy * ox;
+      const convex = clockwise ? turn > 1 : turn < -1;
+      if (!convex || li < 1 || lo < 1) { out.push(curr); continue; }
+      const ux = -ix / li, uy = -iy / li, wx = ox / lo, wy = oy / lo;
+      const theta = Math.acos(Math.max(-1, Math.min(1, ux * wx + uy * wy)));
+      if (theta < 0.25 || theta > Math.PI - 0.08) { out.push(curr); continue; }
+      const t = Math.min(radius / Math.tan(theta / 2), li * 0.45, lo * 0.45);
+      const r = t * Math.tan(theta / 2);
+      if (r < 1.5) { out.push(curr); continue; }
+      const p1 = [curr[0] + ux * t, curr[1] + uy * t];
+      const p2 = [curr[0] + wx * t, curr[1] + wy * t];
+      const bl = Math.hypot(ux + wx, uy + wy);
+      const cx = curr[0] + (ux + wx) / bl * (r / Math.sin(theta / 2));
+      const cy = curr[1] + (uy + wy) / bl * (r / Math.sin(theta / 2));
+      const a1 = Math.atan2(p1[1] - cy, p1[0] - cx);
+      let sweep = Math.atan2(p2[1] - cy, p2[0] - cx) - a1;
+      while (sweep > Math.PI) sweep -= 2 * Math.PI;
+      while (sweep < -Math.PI) sweep += 2 * Math.PI;
+      const want = Math.PI - theta;
+      if (Math.abs(Math.abs(sweep) - want) > 0.35) sweep += sweep > 0 ? -2 * Math.PI : 2 * Math.PI;
+      out.push(p1);
+      for (let s = 1; s < steps; s++) {
+        const a = a1 + sweep * (s / steps);
+        out.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]);
+      }
+      out.push(p2);
+    }
+    return out.map(([x, y]) => [Math.round(x * 10) / 10, Math.round(y * 10) / 10]);
+  }
+  for (const spot of Object.values(tables)) spot.points = roundCorners(spot.points, 10);
+  for (const spot of features) spot.points = roundCorners(spot.points, spot.id === 'stage' ? 6 : 10);
+
   window.NoKingsLayout = { tables, features, viewBox: [-120, -120, 1300, 1240], park: [-10, -30, 990, 1030] };
 })();

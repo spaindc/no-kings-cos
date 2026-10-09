@@ -7,7 +7,7 @@
   <meta name="description" content="Map of group tables, the stage, art projects, medic and restrooms at Acacia Park for No Kings: Vote Early, October 17, 2026.">
   <meta name="theme-color" content="#0e00a3">
   <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="map.css?v=5">
+  <link rel="stylesheet" href="map.css?v=7">
 </head>
 <body>
   <header>
@@ -23,7 +23,7 @@
   </footer>
 
   <template id="booth-popup">
-    <div>
+    <div class="pop">
       <h2 data-field="name"></h2>
       <p class="pop-meta">
         <span class="chip" data-field="chip"></span>
@@ -31,15 +31,15 @@
         <span aria-hidden="true">&middot;</span>
         <span data-field="category"></span>
       </p>
-      <p data-field="description"></p>
-      <p><a data-field="website" target="_blank" rel="noopener"></a></p>
-      <p><a data-field="groups">About this group</a></p>
+      <p class="pop-desc" data-field="description"></p>
+      <p class="pop-site"><a data-field="website" target="_blank" rel="noopener"></a></p>
+      <p class="pop-more"><a data-field="groups">See more on the Groups page</a></p>
     </div>
   </template>
 
   <script src="../vendor/leaflet/leaflet.js"></script>
   <script src="../data.js?v=1"></script>
-  <script src="layout.js?v=1"></script>
-  <script src="map.js?v=6"></script>
+  <script src="layout.js?v=2"></script>
+  <script src="map.js?v=8"></script>
 </body>
 </html>

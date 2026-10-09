@@ -81,7 +81,7 @@ a:focus-visible {
 
 #map {
   flex: 1;
-  background: #c9c7bf;
+  background: #cfcbc2;
 }
 
 .leaflet-container { font: inherit; }
@@ -89,30 +89,48 @@ a:focus-visible {
 /* Labels on top of booths: drawn in map units so they scale with zoom, never block taps. */
 .labels-pane, .labels-pane * { pointer-events: none; }
 .labels text {
-  font-family: "Arial Black", "Segoe UI", system-ui, sans-serif;
-  font-weight: 900;
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-weight: 800;
   text-anchor: middle;
   dominant-baseline: central;
   fill: #fff;
+  paint-order: stroke fill;
+  stroke: rgba(20, 16, 8, 0.55);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 .labels .table-label { font-size: 20px; }
 .labels .table-label.big { font-size: 26px; }
 .labels .feat-label {
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 .labels .feat-label.feat-restrooms { font-size: 9px; letter-spacing: 0; }
-.labels .feat-label.feat-medic { font-size: 26px; letter-spacing: 0; text-transform: none; fill: var(--medic-cross); }
+.labels .feat-label.feat-medic {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: none;
+  fill: var(--medic-cross);
+  stroke: var(--medic-cross);
+  stroke-width: 7px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   background: var(--indigo);
   color: #fff;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
 
-.leaflet-popup-content-wrapper { border-radius: 14px; }
+.leaflet-popup-content-wrapper {
+  border-radius: 18px;
+  box-shadow: inset 5px 0 0 var(--yellow), 0 10px 28px rgba(0, 0, 0, 0.38);
+}
+
+.leaflet-popup-tip { box-shadow: none; }
 
 .leaflet-popup-content {
   margin: 0.85rem 1.15rem 0.9rem 1rem;
@@ -122,21 +140,27 @@ a:focus-visible {
 }
 
 .leaflet-popup-content h2 {
-  margin: 0 0.75rem 0.35rem 0;
-  font-family: "Arial Black", "Segoe UI", sans-serif;
-  font-weight: 900;
+  margin: 0 0.75rem 0.45rem 0;
+  padding-bottom: 0.4rem;
+  box-shadow: inset 0 -2px 0 rgba(255, 230, 0, 0.45);
+  font-family: system-ui, "Segoe UI", sans-serif;
+  font-weight: 800;
   font-size: 1.05rem;
   line-height: 1.15;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #fff;
 }
 
 .leaflet-popup-content p { margin: 0.35rem 0; }
+.pop-desc { color: rgba(255, 255, 255, 0.92); }
+.pop-site { margin-bottom: 0.15rem; }
+.pop-more { margin-top: 0.15rem; }
 
 .leaflet-popup-content a {
   color: var(--yellow);
   font-weight: 700;
+  text-underline-offset: 0.14em;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
@@ -162,27 +186,29 @@ a:focus-visible {
 
 .chip {
   display: inline-block;
-  width: 0.8rem;
-  height: 0.8rem;
-  border-radius: 2px;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 5px;
   flex: none;
 }
 
 .legend {
   background: var(--indigo);
   color: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  border-radius: 16px;
+  box-shadow: inset 5px 0 0 var(--yellow), 0 8px 22px rgba(0, 0, 0, 0.35);
   font-size: 0.85rem;
+  overflow: hidden;
 }
 
 .legend summary {
   cursor: pointer;
-  padding: 0.45rem 0.75rem;
+  padding: 0.5rem 0.8rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--yellow);
+  box-shadow: inset 0 -2px 0 rgba(255, 230, 0, 0.4);
 }
 
 .legend ul {
@@ -213,16 +239,18 @@ a:focus-visible {
 .feat-data { --c: var(--data); }
 .feat-restrooms { --c: var(--restrooms); }
 
-.chip { background: var(--c); }
-.chip.feat-medic { border: 2px solid var(--edge); }
+.chip { background: var(--c); box-shadow: inset 0 0 0 1.5px rgba(255, 250, 243, 0.92); }
+.chip.feat-medic { border: 2px solid var(--edge); box-shadow: none; }
 
 /* Map shapes. Leaflet writes its own default colors as SVG attributes; these rules override them. */
 path.booth, path.feature {
   fill: var(--c);
   fill-opacity: 1;
-  stroke: var(--edge, rgba(20, 16, 8, 0.55));
-  stroke-width: 2.25;
+  stroke: #fffaf3;
+  stroke-opacity: 1;
+  stroke-width: 2.5;
   stroke-linejoin: round;
-  filter: drop-shadow(1.5px 2px 0 rgba(20, 16, 8, 0.28));
+  stroke-linecap: round;
+  filter: drop-shadow(0 1.5px 0 rgba(28, 22, 12, 0.4));
 }
-path.feat-medic { stroke-width: 2.5; }
+path.feat-medic { stroke: var(--edge); stroke-width: 2.5; }
