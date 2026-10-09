@@ -5,17 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Groups — No Kings: Vote Early, Colorado Springs</title>
   <meta name="description" content="Organizations tabling at Acacia Park for No Kings: Vote Early, October 17, 2026, with links to their websites and spots on the map.">
-  <link rel="stylesheet" href="groups.css?v=2">
+  <meta name="theme-color" content="#0e00a3">
+  <link rel="stylesheet" href="groups.css?v=3">
 </head>
 <body>
   <header>
-    <a class="home" href="../">No Kings: Vote Early</a>
-    <h1>Groups</h1>
-    <a class="jump" href="../map/">Map</a>
-    <p id="status" class="status">Loading groups…</p>
+    <nav aria-label="Pages">
+      <a href="../">Event Info</a>
+      <a href="../map/">Map</a>
+      <a href="./" aria-current="page">Groups</a>
+    </nav>
   </header>
 
   <main>
+    <h1>Groups</h1>
     <p class="lead">Organizations tabling at Acacia Park.</p>
 
     <div class="tools">
@@ -30,19 +33,21 @@
       </div>
     </div>
 
-    <p id="count" class="count"></p>
+    <p class="summary">
+      <span id="count" class="count"></span>
+      <span id="status" class="status">Loading groups…</span>
+    </p>
     <ul id="list"></ul>
   </main>
 
   <template id="group-entry">
     <li class="group">
-      <h2 data-field="name"></h2>
-      <p class="meta">
-        <span class="chip" data-field="chip"></span>
-        <span>Table <span data-field="table"></span></span>
-        <span aria-hidden="true">&middot;</span>
-        <span data-field="category"></span>
-      </p>
+      <div class="title-row">
+        <h2>
+          <span class="num"><span class="sr-only">Table </span><span data-field="table"></span></span><span class="sep" aria-hidden="true"> - </span><span data-field="name"></span>
+        </h2>
+        <span class="chip" data-field="chip"><span data-field="category"></span></span>
+      </div>
       <p class="description" data-field="description"></p>
       <p class="actions">
         <a data-field="website" target="_blank" rel="noopener"></a>
