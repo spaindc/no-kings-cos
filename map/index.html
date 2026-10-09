@@ -17,9 +17,24 @@
   </header>
   <div id="map" aria-label="Map of Acacia Park"></div>
 
+  <template id="booth-popup">
+    <div>
+      <h2 data-field="name"></h2>
+      <p class="pop-meta">
+        <span class="chip" data-field="chip"></span>
+        <span>Table <span data-field="table"></span></span>
+        <span aria-hidden="true">&middot;</span>
+        <span data-field="category"></span>
+      </p>
+      <p data-field="description"></p>
+      <p><a data-field="website" target="_blank" rel="noopener"></a></p>
+      <p><a data-field="groups">About this group</a></p>
+    </div>
+  </template>
+
   <script src="../vendor/leaflet/leaflet.js"></script>
   <script src="../data.js?v=1"></script>
   <script src="layout.js?v=1"></script>
-  <script src="map.js?v=2"></script>
+  <script src="map.js?v=3"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 // Map behavior: draws the spots from layout.js, fills booths from the sheet, popups, legend, refresh.
 // No styling here: everything visual is a class styled in map.css (booth, cat-*, feature, feat-*, label).
+// Booth popup markup lives in the #booth-popup template. This file only fills its data-field slots.
 (function () {
   const { tables, features, viewBox, park } = window.NoKingsLayout;
   const { loadGroups, CATEGORIES } = window.NoKingsData;
@@ -56,14 +57,33 @@
   const boothByTable = {};
   let lastData = '';
 
-  function popupHtml(g) {
+  const popupTemplate = document.getElementById('booth-popup');
+
+  function popupSlot(node, name) {
+    const el = node.querySelector('[data-field="' + name + '"]');
+    if (!el) throw new Error('Popup template is missing data-field="' + name + '"');
+    return el;
+  }
+
+  function popupElement(g) {
+    const node = popupTemplate.content.firstElementChild.cloneNode(true);
+    const cat = CATEGORIES[g.category] || CATEGORIES.org;
     let host = '';
     try { host = new URL(g.website).hostname.replace(/^www\./, ''); } catch { /* no website */ }
-    return `<h2>${esc(g.name)}</h2>`
-      + `<p class="pop-meta"><span class="chip cat-${g.category}"></span>Table ${esc(g.table)} &middot; ${esc(CATEGORIES[g.category].label)}</p>`
-      + (g.description ? `<p>${esc(g.description)}</p>` : '')
-      + (host ? `<p><a href="${esc(g.website)}" target="_blank" rel="noopener">${esc(host)}</a></p>` : '')
-      + `<p><a href="../groups/#table-${encodeURIComponent(g.table)}">About this group</a></p>`;
+    popupSlot(node, 'name').textContent = g.name;
+    popupSlot(node, 'chip').classList.add('cat-' + (CATEGORIES[g.category] ? g.category : 'org'));
+    popupSlot(node, 'table').textContent = g.table;
+    popupSlot(node, 'category').textContent = cat.label;
+    const description = popupSlot(node, 'description');
+    if (g.description) description.textContent = g.description;
+    else description.remove();
+    const website = popupSlot(node, 'website');
+    if (host) {
+      website.href = g.website;
+      website.textContent = host;
+    } else website.parentElement.remove();
+    popupSlot(node, 'groups').href = '../groups/#table-' + encodeURIComponent(g.table);
+    return node;
   }
 
   function drawBooths(groups) {
@@ -77,7 +97,7 @@
         continue;
       }
       if (boothByTable[g.table]) console.warn(`Table ${g.table} is listed twice; showing ${g.name}`);
-      boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupHtml(g)).addTo(booths);
+      boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupElement(g)).addTo(booths);
       labels += textLines(spot.label, [g.table], `label table-label${spot.big ? ' big' : ''}`);
     }
     labelsSvg.innerHTML = featureLabels + labels;

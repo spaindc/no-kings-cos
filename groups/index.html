@@ -34,7 +34,24 @@
     <ul id="list"></ul>
   </main>
 
+  <template id="group-entry">
+    <li class="group">
+      <h2 data-field="name"></h2>
+      <p class="meta">
+        <span class="chip" data-field="chip"></span>
+        <span>Table <span data-field="table"></span></span>
+        <span aria-hidden="true">&middot;</span>
+        <span data-field="category"></span>
+      </p>
+      <p class="description" data-field="description"></p>
+      <p class="actions">
+        <a data-field="website" target="_blank" rel="noopener"></a>
+        <a data-field="map">Show on map</a>
+      </p>
+    </li>
+  </template>
+
   <script src="../data.js?v=1"></script>
-  <script src="groups.js?v=1"></script>
+  <script src="groups.js?v=2"></script>
 </body>
 </html>

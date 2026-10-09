@@ -1,9 +1,9 @@
 // Groups list: same sheet as the map. Search, sort, and links to each spot.
-// No styling here: everything visual is a class styled in groups.css.
+// The entry's markup lives in the #group-entry template. This file only fills its data-field slots.
 (function () {
   const { loadGroups, CATEGORIES } = window.NoKingsData;
   const REFRESH_MS = 2 * 60 * 1000;
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const entryTemplate = document.getElementById('group-entry');
 
   const q = document.getElementById('q');
   const list = document.getElementById('list');
@@ -44,18 +44,31 @@
     return used[base] === 1 ? base : base + '-' + used[base];
   }
 
-  function entryHtml(g, id) {
+  function slot(node, name) {
+    const el = node.querySelector('[data-field="' + name + '"]');
+    if (!el) throw new Error('Group template is missing data-field="' + name + '"');
+    return el;
+  }
+
+  function fillEntry(g, id) {
+    const node = entryTemplate.content.firstElementChild.cloneNode(true);
     const cat = CATEGORIES[g.category] || CATEGORIES.org;
     const host = hostOf(g.website);
-    const mapHref = '../map/#table-' + encodeURIComponent(g.table);
-    return `<li class="group" id="${esc(id)}">`
-      + `<h2>${esc(g.name)}</h2>`
-      + `<p class="meta"><span class="chip cat-${esc(g.category)}"></span>Table ${esc(g.table)} &middot; ${esc(cat.label)}</p>`
-      + (g.description ? `<p class="description">${esc(g.description)}</p>` : '')
-      + `<p class="actions">`
-      + (host ? `<a href="${esc(g.website)}" target="_blank" rel="noopener">${esc(host)}</a>` : '')
-      + `<a href="${esc(mapHref)}">Show on map</a>`
-      + `</p></li>`;
+    node.id = id;
+    slot(node, 'name').textContent = g.name;
+    slot(node, 'chip').classList.add('cat-' + (CATEGORIES[g.category] ? g.category : 'org'));
+    slot(node, 'table').textContent = g.table;
+    slot(node, 'category').textContent = cat.label;
+    const description = slot(node, 'description');
+    if (g.description) description.textContent = g.description;
+    else description.remove();
+    const website = slot(node, 'website');
+    if (host) {
+      website.href = g.website;
+      website.textContent = host;
+    } else website.remove();
+    slot(node, 'map').href = '../map/#table-' + encodeURIComponent(g.table);
+    return node;
   }
 
   // mode: 'keep' preserves scroll (a sheet refresh or typing a search), 'hash' opens the linked entry, 'top' follows a new sort.
@@ -72,9 +85,15 @@
       return byTable || byName(a, b);
     });
     const used = {};
-    list.innerHTML = rows.length
-      ? rows.map(g => entryHtml(g, entryId(g.table, used))).join('')
-      : `<li class="empty">${groups.length ? 'No groups match that search.' : 'No groups are listed yet.'}</li>`;
+    list.replaceChildren();
+    if (!rows.length) {
+      const empty = document.createElement('li');
+      empty.className = 'empty';
+      empty.textContent = groups.length ? 'No groups match that search.' : 'No groups are listed yet.';
+      list.append(empty);
+    } else {
+      for (const g of rows) list.append(fillEntry(g, entryId(g.table, used)));
+    }
     count.textContent = query
       ? `${rows.length} of ${groups.length} groups`
       : `${groups.length} group${groups.length === 1 ? '' : 's'}`;
