@@ -1,6 +1,6 @@
 :root {
   --indigo: #0e00a3;
-  --yellow: #ffba0a;
+  --yellow: #ffe600;
   --red: #ff0000;
   --ink: #141414;
 }
@@ -42,7 +42,7 @@ nav a[aria-current="page"] {
   color: var(--ink);
 }
 
-nav a:hover { text-decoration: underline; }
+nav a:hover { color: var(--yellow); }
 nav a[aria-current="page"]:hover { color: var(--ink); text-decoration: none; }
 
 .when {
@@ -73,7 +73,7 @@ main {
   letter-spacing: 0.16em;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--yellow);
 }
 
 h1 {
@@ -112,7 +112,7 @@ h1 {
 
 .shout {
   margin: 0 0 1rem;
-  color: #fff;
+  color: var(--yellow);
   font-weight: 700;
   font-size: 1.15rem;
   line-height: 1.35;
@@ -123,13 +123,13 @@ h1 {
 main p { margin: 0.7rem 0; }
 
 main a {
-  color: #fff;
+  color: var(--yellow);
   font-weight: 700;
 }
 
 .links { margin-top: 1.6rem; }
 
 a:focus-visible {
-  outline: 3px solid #fff;
+  outline: 3px solid var(--yellow);
   outline-offset: 3px;
 }
