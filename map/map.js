@@ -5,7 +5,6 @@
   const { loadGroups, CATEGORIES } = window.NoKingsData;
   const [vx, vy, vw, vh] = viewBox;
   const REFRESH_MS = 2 * 60 * 1000;
-  const SHOW_EMPTY = new URLSearchParams(location.search).has('all'); // map/?all also outlines spots nobody is using
 
   // Leaflet's flat map mode: latitude is -y, longitude is x.
   const ll = ([x, y]) => L.latLng(-y, x);
@@ -79,13 +78,6 @@
       if (boothByTable[g.table]) console.warn(`Table ${g.table} is listed twice; showing ${g.name}`);
       boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupHtml(g)).addTo(booths);
       labels += textLines(spot.label, [g.table], `label table-label${spot.big ? ' big' : ''}`);
-    }
-    if (SHOW_EMPTY) {
-      for (const [n, spot] of Object.entries(tables)) {
-        if (boothByTable[n]) continue;
-        spotLayer(spot, 'booth booth-empty').bindPopup(`<h2>Table ${esc(n)}</h2><p>Open spot (on hold in the sheet)</p>`).addTo(booths);
-        labels += textLines(spot.label, [n], `label table-label empty${spot.big ? ' big' : ''}`);
-      }
     }
     labelsSvg.innerHTML = featureLabels + labels;
   }
