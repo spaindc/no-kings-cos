@@ -7,7 +7,7 @@
 (function () {
   const PLAZA = [490, 515.3]; // where the four diagonals cross
   const LONG = 44;            // regular table, along the path
-  const DEEP = 32;            // regular table, away from the path
+  const DEEP = 48;            // regular table, away from the path
   const OFF = 12 + 5 + DEEP / 2;
 
   function rect(cx, cy, w, h, deg = 0) {
@@ -38,7 +38,8 @@
 
   // Southeast diagonal: 3-6 on the east side, 7-11 on the west side.
   [[3, 150], [4, 255], [5, 303], [6, 405]].forEach(([n, t]) => { tables[n] = onDiagonal(SE, t, -1); });
-  [7, 8, 9, 10, 11].forEach((n, i) => { tables[n] = onDiagonal(SE, 196 + i * 66, 1); });
+  // The medic tent is the first spot on the west side (see features).
+  [7, 8, 9, 10, 11].forEach((n, i) => { tables[n] = onDiagonal(SE, 254 + i * 54.5, 1); });
 
   // East edge along Nevada, south to north.
   [[12, 715], [13, 660], [14, 520], [15, 395], [16, 347], [17, 270]].forEach(([n, y]) => { tables[n] = eastEdge(y); });
@@ -48,7 +49,7 @@
   tables[18] = { big: true, points: [[853.2, 176], [917, 176], [917, 215], [814.2, 215]], label: [878, 196] };
 
   // Northeast diagonal. 19 side (northwest of the path): 20 at the top down to 26.
-  [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 58.2, -1); });
+  [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 54, -1); });
   // 18 side (southeast of the path): 32 at the top down to 27.
   [27, 28, 29, 30, 31, 32].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
 
@@ -63,7 +64,7 @@
     },
     { id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art'], points: rect(366, 812.5, 96, 155) },
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
-    { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], points: rect(597.2, 721.5, 40, 30, SE) },
+    { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
     { id: 'training', name: 'Petition Signature Training', note: '', lines: ['Petition', 'Signature', 'Training'], points: rect(432.5, 354, 85, 68) },
     {
       id: 'data', name: 'Data center', note: '', lines: ['Data', 'center'],

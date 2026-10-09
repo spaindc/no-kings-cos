@@ -80,6 +80,7 @@ h1 {
 }
 .labels .table-label { font-size: 18px; }
 .labels .table-label.big { font-size: 24px; }
+.labels .table-label.empty { fill: var(--muted); }
 .labels .feat-label { font-size: 12px; }
 .labels .feat-label.feat-restrooms { font-size: 11px; }
 .labels .feat-label.feat-medic { font-size: 26px; fill: var(--medic-cross); }
@@ -151,3 +152,4 @@ path.booth, path.feature {
   stroke-linejoin: round;
 }
 path.feat-medic { stroke-width: 2.5; }
+path.booth-empty { fill: #fff; fill-opacity: 0.35; stroke: var(--muted); stroke-dasharray: 5 4; }
