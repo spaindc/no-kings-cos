@@ -110,6 +110,37 @@ h1 {
 
 .places p { margin: 0.3rem 0 0; }
 
+.info {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.2rem;
+}
+
+.info section {
+  background: #fff;
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 0.95rem 1rem 1.05rem;
+}
+
+.info h2 {
+  margin: 0;
+  font-family: "Arial Black", "Segoe UI", sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.info p { margin: 0.45rem 0 0; }
+
+.info ol,
+.info ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.info li + li { margin-top: 0.4rem; }
+
 .shout {
   margin: 0 0 1rem;
   color: var(--yellow);
@@ -118,14 +149,14 @@ h1 {
   line-height: 1.35;
 }
 
-.note { margin: 0 0 1.1rem; font-size: 0.98rem; }
-
 main p { margin: 0.7rem 0; }
 
 main a {
   color: var(--yellow);
   font-weight: 700;
 }
+
+main .info a { color: var(--indigo); }
 
 .links { margin-top: 1.6rem; }
 
