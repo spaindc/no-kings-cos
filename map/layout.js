@@ -58,13 +58,15 @@
 
   const features = [
     {
-      id: 'stage', name: 'Bandshell stage', note: 'Performers', lines: ['Stage'], building: true,
+      id: 'stage', name: 'Performances Stage', note: 'Performers', lines: ['Stage'], building: true,
       points: [[447, 828], [546, 828], [546, 854], [530, 854], [530, 906], [462, 906], [462, 854], [447, 854]],
       label: [496, 872],
     },
     {
-      id: 'art', name: 'Art project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art'],
-      points: [[318, 738], [412, 738], [412, 888], [280, 888], [310, 820]],
+      id: 'art', name: 'Art Project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art', 'Project'],
+      // Square in the same lawn, so the two-line name sits in the middle.
+      points: [[280, 756], [412, 756], [412, 888], [280, 888]],
+      label: [346, 822],
     },
     {
       id: 'aid', name: 'Mutual aid', note: 'Collection point. Migra Watch is at table 19.', lines: ['Mutual', 'aid'],
@@ -74,7 +76,7 @@
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
     {
-      id: 'training', name: 'Petition Signature Training', note: '', lines: ['Petition', 'Training'],
+      id: 'training', name: 'Petition Signature Training', legend: 'Petition Training', note: '', lines: ['Petition', 'Training'],
       points: [[348, 308], [470, 308], [470, 414], [416, 414]],
     },
     {

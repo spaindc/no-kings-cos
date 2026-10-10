@@ -156,11 +156,12 @@
   function fillLegend(groups) {
     const used = groups ? new Set(groups.map(g => g.category)) : null;
     const cats = Object.entries(CATEGORIES).filter(([key]) => !used || used.has(key));
-    const item = (cls, text, extra = '') => `<li class="${extra}"><span class="chip ${cls}"></span>${esc(text)}</li>`;
+    const words = text => text.replace(/\S+/g, word => word.charAt(0).toUpperCase() + word.slice(1));
+    const item = (cls, text) => `<li><span class="chip ${cls}"></span>${esc(words(text))}</li>`;
     const open = legendEl.open;
     legendEl.innerHTML = '<summary>Legend</summary><ul>'
       + cats.map(([key, c]) => item(`cat-${key}`, c.legend)).join('')
-      + features.map((f, i) => item(`feat-${f.id}`, f.name, i === 0 ? 'gap' : '')).join('')
+      + features.map(f => item(`feat-${f.id}`, f.legend || f.name)).join('')
       + '</ul>';
     legendEl.open = open;
   }

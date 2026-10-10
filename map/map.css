@@ -236,8 +236,6 @@ a:focus-visible {
   margin: 0.2rem 0;
 }
 
-.legend li.gap { margin-top: 0.55rem; }
-
 /* Spot colors: one variable per category or feature, used by the map shapes and the legend chips.
    Map shapes are SVG (fill/stroke); chips are HTML (background). */
 .cat-info { --c: var(--info); }
