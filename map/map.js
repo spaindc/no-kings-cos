@@ -49,7 +49,7 @@
   function featureLabel(f) {
     const lines = f.lines || [f.name];
     const cls = `label feat-label feat-${f.id}`;
-    if (!document.getElementById('icon-' + f.id)) return textLines(f.label, lines, cls);
+    if (!document.getElementById('icon-' + f.id)) return textLines(f.label, lines, cls, 22);
     const [x, y] = f.label;
     const size = 24;
     const gap = 3;

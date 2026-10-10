@@ -235,18 +235,4 @@
   <path fill="#0e00a3" stroke="#ffe600" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" d="M1014,114 Q1014,90 1038,90 L1088,90 Q1112,90 1112,114 L1112,836 L1138,836 L1063,948 L988,836 L1014,836 Z"/>
   <text fill="#ffe600" stroke="#0e00a3" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round" font-family="system-ui, Segoe UI, sans-serif" font-size="52" font-weight="800" text-anchor="middle" dominant-baseline="central" textLength="660" lengthAdjust="spacingAndGlyphs" transform="translate(1063 474) rotate(90)">SPEAKERS AT CITY HALL</text>
 </g>
-<!-- Activity marks: one bold icon in the open grass beside each place. Same stroke on every mark. -->
-<g id="Activity-marks" inkscape:groupmode="layer" inkscape:label="Activity marks">
-  <g id="activity-mark-shapes" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M802 480 C802 480 783 466 783 454 C783 445 791 439 802 448 C813 439 821 445 821 454 C821 466 802 480 802 480"/>
-    <path d="M352 722 C360 706 374 718 382 700"/>
-    <path d="M486 676 a10 10 0 0 1 20 0 v12 a10 10 0 0 1 -20 0 z M496 698 v12 M484 706 a12 10 0 0 0 24 0"/>
-    <path d="M300 906 a4.5 4.5 0 1 1 0.1 0 M294 914 h12 M300 914 v8 M300 922 l-5 8 M300 922 l5 8"/>
-    <path d="M808 688 h28 v18 h-28 z M822 706 v7 M812 713 h20"/>
-    <path d="M330 456 L358 428 L366 436 L338 464 z M358 428 L366 420"/>
-    <path d="M778 572 h28 v28 h-28 z M784 586 l8 10 l18 -20"/>
-  </g>
-  <use href="#activity-mark-shapes" stroke="#fffaf3" stroke-width="12"/>
-  <use href="#activity-mark-shapes" stroke="#0e00a3" stroke-width="7"/>
-</g>
 </svg>

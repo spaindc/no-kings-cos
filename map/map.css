@@ -102,13 +102,11 @@ a:focus-visible {
 .labels .table-label { font-size: 20px; }
 .labels .table-label.big { font-size: 26px; }
 .labels .feat-label {
-  font-size: 10px;
+  font-size: 18px;
   letter-spacing: 0;
   text-transform: uppercase;
-  fill: var(--yellow);
-  stroke: #1a140c;
-  stroke-width: 5px;
 }
+.labels .feat-label.feat-restrooms { font-size: 10px; }
 .labels .feat-label.feat-medic {
   font-size: 30px;
   font-weight: 900;
