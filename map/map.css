@@ -45,6 +45,7 @@ header .site-name {
 header nav {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.15rem;
   max-width: 40rem;
   margin: 0 auto;
