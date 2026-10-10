@@ -36,7 +36,8 @@ header nav {
   gap: 0.15rem;
   max-width: 40rem;
   margin: 0 auto;
-  padding: 0.15rem 1.25rem 0.2rem;
+  /* The link padding is 0.75rem, so the words start on the same edge as the name and the heading. */
+  padding: 0.15rem 1.25rem 0.2rem 0.5rem;
 }
 
 nav a {
