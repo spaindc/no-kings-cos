@@ -68,7 +68,9 @@
     },
     {
       id: 'aid', name: 'Mutual aid', note: 'Collection point. Migra Watch is at table 19.', lines: ['Mutual', 'aid'],
-      points: [[736.8, 292.6], [809.6, 219.7], [843.6, 253.7], [770.7, 326.5]],
+      // Path edge stays. The lawn side reaches south into the open grass, short of table 30 and the Nevada tables.
+      points: [[736.8, 292.6], [809.6, 219.7], [843.6, 253.7], [800, 440], [770.7, 326.5]],
+      label: [798, 332],
     },
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
