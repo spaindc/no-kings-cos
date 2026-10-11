@@ -76,10 +76,6 @@
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
     {
-      id: 'training', name: 'Petition Signature Training', legend: 'Petition Training', note: '', lines: ['Petition', 'Training'],
-      points: [[348, 308], [470, 308], [470, 414], [416, 414]],
-    },
-    {
       id: 'data', name: 'Data center', note: '', lines: ['Data', 'center'],
       points: [[838, 776], [915, 776], [915, 880], [879, 880], [838, 839]],
       label: [878, 822],

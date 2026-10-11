@@ -45,6 +45,17 @@ nav a[aria-current="page"] {
 nav a:hover { color: var(--yellow); }
 nav a[aria-current="page"]:hover { color: var(--ink); text-decoration: none; }
 
+.banner {
+  margin: 0;
+  padding: 0.55rem 1.25rem;
+  background: var(--yellow);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
 .when {
   display: flex;
   flex-wrap: wrap;
@@ -109,6 +120,15 @@ h1 {
 }
 
 .places p { margin: 0.3rem 0 0; }
+
+.places .soon,
+.info .soon {
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--indigo);
+}
 
 .info {
   display: grid;

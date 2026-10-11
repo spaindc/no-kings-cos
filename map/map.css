@@ -13,7 +13,6 @@
   --art: #c2185b;
   --medic: #ffffff;
   --medic-cross: #d32f2f;
-  --training: #1b7f86;
   --data: #455a64;
   --restrooms: #7c8a96;
 }
@@ -246,7 +245,6 @@ a:focus-visible {
 .feat-art { --c: var(--art); }
 .feat-aid { --c: var(--aid); }
 .feat-medic { --c: var(--medic); --edge: var(--medic-cross); }
-.feat-training { --c: var(--training); }
 .feat-data { --c: var(--data); }
 .feat-restrooms { --c: var(--restrooms); }
 
