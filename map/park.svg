@@ -138,16 +138,19 @@
   <circle cx="490.0" cy="515.0" r="62"/>
   <circle cx="490.0" cy="515.0" r="46" fill="none" stroke="#efe2cc" stroke-width="3"/>
 </g>
-<g id="Playground" inkscape:groupmode="layer" inkscape:label="Playground" fill="#efcb90" stroke="#d4aa62" stroke-width="3" stroke-linejoin="round">
+<g id="Playground" inkscape:groupmode="layer" inkscape:label="Playground" fill="#efcb90" stroke="#b07a32" stroke-width="5" stroke-linejoin="round">
   <path d="M142.1,604.7L233.0,613.3L236.4,678.6L206.5,701.7L194.7,710.7L173.9,712.5L136.3,685.2L117.2,653.2L142.1,604.7Z"/>
   <path d="M161.0,564.7L125.0,555.3L113.8,520.2L122.3,488.2L145.4,468.5L168.5,465.7L182.7,464.1L209.3,437.4L235.6,440.3L254.3,457.3L271.5,486.3L268.4,503.7L265.0,523.1L237.4,548.9L196.5,563.4L167.1,564.5L161.0,564.7Z"/>
 </g>
 <g id="Courts" inkscape:groupmode="layer" inkscape:label="Courts" fill="#d5e3df" stroke="#b3c4c0" stroke-width="3" stroke-linejoin="round">
   <path d="M299.5,186.9L466.3,185.6L465.4,295.1L319.4,295.6L297.7,275.7L299.5,186.9Z"/>
+  <path fill="none" stroke="#5c807c" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" d="M312,197 L454,196 L453,284 L332,284 L312,268 Z"/>
+  <path fill="none" stroke="#5c807c" stroke-width="2.2" stroke-linecap="round" d="M383,197 L383,284"/>
 </g>
-<g id="Fountain" inkscape:groupmode="layer" inkscape:label="Fountain" fill="#74b9ce" stroke="#f7f3ea" stroke-width="9">
+<g id="Fountain" inkscape:groupmode="layer" inkscape:label="Fountain" fill="#3e96bc" stroke="#f7f3ea" stroke-width="10">
   <circle cx="154.4" cy="850.5" r="62"/>
-  <circle cx="154.4" cy="850.5" r="40" fill="none" stroke="#f7f3ea" stroke-width="3"/>
+  <circle cx="154.4" cy="850.5" r="44" fill="none" stroke="#f7f3ea" stroke-width="5"/>
+  <circle cx="154.4" cy="850.5" r="27" fill="#b9e2f2" stroke="none"/>
 </g>
 <g id="Sidewalks" inkscape:groupmode="layer" inkscape:label="Sidewalks" fill="none" stroke="#f3f0e8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
   <path d="M1198.5,21.5L1199.0,73.9L1199.2,958.4L1201.9,1043.9L1202.0,1138.8L1202.7,1633.6L1203.1,1806.1L1203.4,2024.2"/>
@@ -223,6 +226,7 @@
   <text x="154.4" y="856.5">UNCLE WILBER</text>
   <text x="154.4" y="876.5">FOUNTAIN</text>
   <text x="177.9" y="672.4">PLAYGROUND</text>
+  <text x="383" y="242">COURTS</text>
   <text x="496" y="928" font-size="11" letter-spacing="0.4">STORY COFFEE</text>
 </g>
 <g id="Street-labels" inkscape:groupmode="layer" inkscape:label="Street labels" font-family="system-ui, Segoe UI, sans-serif" text-anchor="middle" font-size="20" font-weight="800" letter-spacing="1.8" fill="#2e2c29" stroke="#e4e1da" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round">
