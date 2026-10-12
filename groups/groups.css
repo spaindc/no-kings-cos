@@ -7,6 +7,7 @@
   --org: #0e00a3;
   --ballot: #6d28a8;
   --aid: #ff7a00;
+  --data: #008577;
 }
 
 * { box-sizing: border-box; }
@@ -255,6 +256,7 @@ h1 {
 .cat-org { --c: var(--org); }
 .cat-ballot { --c: var(--ballot); }
 .cat-aid { --c: var(--aid); }
+.cat-data { --c: var(--data); }
 
 .sr-only {
   position: absolute;

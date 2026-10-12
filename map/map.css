@@ -8,12 +8,12 @@
   --org: #0e00a3;
   --ballot: #6d28a8;
   --aid: #ff7a00;
+  --data: #008577;
 
   --stage: #3d3a35;
   --art: #c2185b;
   --medic: #ffffff;
   --medic-cross: #d32f2f;
-  --data: #455a64;
   --restrooms: #7c8a96;
 }
 
@@ -241,11 +241,11 @@ a:focus-visible {
 .cat-org { --c: var(--org); }
 .cat-ballot { --c: var(--ballot); }
 .cat-aid { --c: var(--aid); }
+.cat-data { --c: var(--data); }
 .feat-stage { --c: var(--stage); }
 .feat-art { --c: var(--art); }
 .feat-aid { --c: var(--aid); }
 .feat-medic { --c: var(--medic); --edge: var(--medic-cross); }
-.feat-data { --c: var(--data); }
 .feat-restrooms { --c: var(--restrooms); }
 
 .chip { background: var(--c); box-shadow: inset 0 0 0 1.5px rgba(255, 250, 243, 0.92); }

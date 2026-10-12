@@ -14,8 +14,11 @@
     org: { sheet: 'org', label: 'Group', legend: 'Groups' },
     ballot: { sheet: 'ballot measures', label: 'Ballot measures', legend: 'Ballot measures' },
     aid: { sheet: 'mutual aid', label: 'Mutual aid', legend: 'Mutual aid' },
+    data: { sheet: 'data center', label: 'Data center', legend: 'Data center' },
   };
   const BY_SHEET = Object.fromEntries(Object.entries(CATEGORIES).map(([k, c]) => [c.sheet, k]));
+  // The sheet's category cell says "Data Centers".
+  BY_SHEET['data centers'] = 'data';
 
   const clean = s => String(s ?? '').replace(/\s+/g, ' ').trim();
   const key = s => clean(s).toLowerCase();

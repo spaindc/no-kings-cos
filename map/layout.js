@@ -36,25 +36,25 @@
   tables[1] = { big: true, points: [[467.4, 515.3], [415, 462.9], [415, 567.7]] };
   tables[2] = { big: true, points: [[512.6, 515.3], [565, 462.9], [565, 567.7]] };
 
-  // Southeast diagonal: 3-6 on the east side, 7-11 on the west side.
-  [[3, 150], [4, 255], [5, 303], [6, 405]].forEach(([n, t]) => { tables[n] = onDiagonal(SE, t, -1); });
-  // The medic tent is the first spot on the west side (see features).
-  [7, 8, 9, 10, 11].forEach((n, i) => { tables[n] = onDiagonal(SE, 254 + i * 54.5, 1); });
+  // Southeast diagonal, east side, from the plaza out to the corner: 3-7.
+  [[3, 150], [4, 255], [5, 303], [6, 405], [7, 459]].forEach(([n, t]) => { tables[n] = onDiagonal(SE, t, -1); });
+  // West side of that diagonal. The medic tent is the first spot (see features).
+  [8, 9, 10, 11, 12].forEach((n, i) => { tables[n] = onDiagonal(SE, 254 + i * 54.5, 1); });
 
-  // East edge along Nevada, south to north.
-  [[12, 715], [13, 660], [14, 520], [15, 395], [16, 347], [17, 270]].forEach(([n, y]) => { tables[n] = eastEdge(y); });
+  // East edge along Nevada, south to north. 13 is the southeast corner.
+  [[13, 770], [14, 715], [15, 660], [16, 520], [17, 395], [18, 347], [19, 270]].forEach(([n, y]) => { tables[n] = eastEdge(y); });
 
-  // Northeast corner: 19 between the Platte walk and the diagonal; 18 under the spur to Nevada.
-  tables[19] = { big: true, points: [[812, 91.5], [892.5, 91.5], [812, 172]] };
-  tables[18] = { big: true, points: [[853.2, 176], [917, 176], [917, 215], [814.2, 215]], label: [878, 196] };
+  // Northeast corner: 21 between the Platte walk and the diagonal; 20 under the spur to Nevada.
+  tables[21] = { big: true, points: [[812, 91.5], [892.5, 91.5], [812, 172]] };
+  tables[20] = { big: true, points: [[853.2, 176], [917, 176], [917, 215], [814.2, 215]], label: [878, 196] };
 
-  // Northeast diagonal. 19 side (northwest of the path): 20 at the top down to 26.
-  [20, 21, 22, 23, 24, 25, 26].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 54, -1); });
-  // 18 side (southeast of the path): 30 at the top down to 27. The old 31 and 32 spots are the mutual aid area.
-  [27, 28, 29, 30].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
+  // Northeast diagonal. 21 side (northwest of the path): 22 at the top down to 28.
+  [22, 23, 24, 25, 26, 27, 28].forEach((n, i) => { tables[n] = onDiagonal(NE, 443 - i * 54, -1); });
+  // 20 side (southeast of the path): 32 at the top down to 29.
+  [29, 30, 31, 32].forEach((n, i) => { tables[n] = onDiagonal(NE, 118 + i * 59, 1); });
 
-  // North edge, left to right: 34, 33, 32, 31. Same ground as the old 36, 35, 34, 33.
-  [[34, 598], [33, 646], [32, 809], [31, 857]].forEach(([n, x]) => { tables[n] = northEdge(x); });
+  // North edge, left to right: 36, 35, 34, 33.
+  [[36, 598], [35, 646], [34, 809], [33, 857]].forEach(([n, x]) => { tables[n] = northEdge(x); });
 
   const features = [
     {
@@ -70,16 +70,11 @@
     },
     {
       id: 'aid', name: 'Mutual aid', note: 'Donation drive. Bring diapers and wipes, toys, hygiene products, or nonperishable food. Aid goes to families working with Migra Watch.', lines: ['Mutual', 'aid'],
-      // Rectangle in the lawn of the marked box: off the diagonal path, short of table 30 and the Nevada tables.
+      // Rectangle in the lawn of the marked box: off the diagonal path, short of table 32 and the Nevada tables.
       points: [[770, 270], [860, 270], [860, 370], [770, 370]],
     },
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
-    {
-      id: 'data', name: 'Data center', note: '', lines: ['Data', 'center'],
-      points: [[838, 776], [915, 776], [915, 880], [879, 880], [838, 839]],
-      label: [878, 822],
-    },
   ];
 
   const middle = pts => [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];
