@@ -59,8 +59,8 @@
   const features = [
     {
       id: 'stage', name: 'Performances Stage', note: 'Performers', lines: ['Stage'], building: true,
-      points: [[447, 828], [546, 828], [546, 854], [530, 854], [530, 906], [462, 906], [462, 854], [447, 854]],
-      label: [496, 872],
+      // Square centered in the lawn inside the bandshell path, above Story Coffee.
+      points: rect(492, 857, 84, 84),
     },
     {
       id: 'art', name: 'Art Project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art', 'Project'],
@@ -124,7 +124,7 @@
     return out.map(([x, y]) => [Math.round(x * 10) / 10, Math.round(y * 10) / 10]);
   }
   for (const spot of Object.values(tables)) spot.points = roundCorners(spot.points, 10);
-  for (const spot of features) spot.points = roundCorners(spot.points, spot.id === 'stage' ? 6 : 10);
+  for (const spot of features) spot.points = roundCorners(spot.points, 10);
 
   window.NoKingsLayout = { tables, features, viewBox: [-120, -120, 1300, 1240], park: [-10, -30, 990, 1030] };
 })();
