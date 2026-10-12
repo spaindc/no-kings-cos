@@ -69,7 +69,7 @@
       label: [346, 822],
     },
     {
-      id: 'aid', name: 'Mutual aid', note: 'Collection point. Migra Watch is at table 19.', lines: ['Mutual', 'aid'],
+      id: 'aid', name: 'Mutual aid', note: 'Donation drive. Bring diapers and wipes, toys, hygiene products, or nonperishable food. Aid goes to families working with Migra Watch.', lines: ['Mutual', 'aid'],
       // Rectangle in the lawn of the marked box: off the diagonal path, short of table 30 and the Nevada tables.
       points: [[770, 270], [860, 270], [860, 370], [770, 370]],
     },
