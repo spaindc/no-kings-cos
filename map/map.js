@@ -13,7 +13,7 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   const map = L.map('map', { crs: L.CRS.Simple, zoomSnap: 0.25, zoomDelta: 0.5, minZoom: -4, maxZoom: 2 });
-  map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
   map.createPane('park').style.zIndex = 200;
   map.createPane('spots').style.zIndex = 410;
   const labelsPane = map.createPane('labels');
@@ -23,7 +23,7 @@
 
   L.imageOverlay('park.svg' + new URL(document.currentScript.src).search, box(vx, vy, vw, vh), {
     pane: 'park',
-    attribution: 'Park drawing from &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    attribution: 'Park drawing from &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
   }).addTo(map);
 
   const parkBox = box(park[0], park[1], park[2] - park[0], park[3] - park[1]);
