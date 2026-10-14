@@ -59,10 +59,11 @@
       + textLines([x, top + size + gap + textH / 2], lines, cls);
   }
 
-  // Fixed features: always shown, drawn once.
+  // Fixed features: always shown, drawn once. #stage and the other ids open that popup.
+  const featureById = {};
   let featureLabels = '';
   for (const f of features) {
-    spotLayer(f, `feature feat-${f.id}`)
+    featureById[f.id] = spotLayer(f, `feature feat-${f.id}`)
       .bindPopup(`<h2>${esc(f.name)}</h2>${f.note ? `<p>${esc(f.note)}</p>` : ''}`)
       .addTo(map);
     featureLabels += featureLabel(f);
@@ -143,11 +144,13 @@
   }
 
   function openFromHash() {
-    const m = location.hash.match(/^#table-(.+)$/);
-    const booth = m && boothByTable[decodeURIComponent(m[1])];
-    if (booth) {
-      map.setView(booth.getCenter(), Math.max(map.getZoom(), 0.5));
-      booth.openPopup();
+    const table = location.hash.match(/^#table-(.+)$/);
+    const booth = table && boothByTable[decodeURIComponent(table[1])];
+    const feature = !booth && location.hash.match(/^#([a-z]+)$/);
+    const layer = booth || (feature && featureById[feature[1]]);
+    if (layer) {
+      map.setView(layer.getCenter(), Math.max(map.getZoom(), 0.5));
+      layer.openPopup();
     }
   }
 
