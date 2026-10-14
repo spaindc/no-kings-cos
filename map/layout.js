@@ -58,12 +58,12 @@
 
   const features = [
     {
-      id: 'stage', name: 'Performances Stage', note: 'Performers', lines: ['Stage'], building: true,
+      id: 'stage', name: 'Performances Stage', note: 'Performers', href: '../#performers', hrefLabel: 'Full list of performers on the info page', lines: ['Stage'], building: true,
       // Square centered in the lawn inside the bandshell path, above Story Coffee.
       points: rect(492, 857, 84, 84),
     },
     {
-      id: 'art', name: 'Art Project', note: 'Index-card protest signs and the VOTE sign', lines: ['Art', 'Project'],
+      id: 'art', name: 'Art Project', note: 'Draw a protest sign on an index card and add it to a larger canvas. The finished piece will be displayed at the Manitou Art Center. Bring an “I voted” sticker, or use one provided, and put it on the VOTE sign to pledge a vote or record that you voted.', lines: ['Art', 'Project'],
       // Square in the same lawn, so the two-line name sits in the middle.
       points: [[280, 756], [412, 756], [412, 888], [280, 888]],
       label: [346, 822],
@@ -75,6 +75,11 @@
     },
     { id: 'restrooms', name: 'Restrooms', note: '', lines: ['Restrooms'], points: rect(380, 919, 68, 42) },
     { id: 'medic', name: 'Medic', note: 'First aid and water', lines: ['+'], ...onDiagonal(SE, 196, 1) },
+    {
+      // Hit target for the arrow drawn in park.svg. It sits on the Nevada median, outside the park, so the layout check skips it.
+      id: 'speakers', name: 'Speakers at City Hall', note: 'Speakers', href: '../#speakers', hrefLabel: 'Full list of speakers on the info page', hit: true,
+      points: [[988, 90], [1138, 90], [1138, 948], [988, 948]],
+    },
   ];
 
   const middle = pts => [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length];

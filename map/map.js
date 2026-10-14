@@ -63,10 +63,12 @@
   const featureById = {};
   let featureLabels = '';
   for (const f of features) {
+    const note = f.note ? `<p>${esc(f.note)}</p>` : '';
+    const more = f.href ? `<p><a href="${esc(f.href)}">${esc(f.hrefLabel)}</a></p>` : '';
     featureById[f.id] = spotLayer(f, `feature feat-${f.id}`)
-      .bindPopup(`<h2>${esc(f.name)}</h2>${f.note ? `<p>${esc(f.note)}</p>` : ''}`)
+      .bindPopup(`<h2>${esc(f.name)}</h2>${note}${more}`)
       .addTo(map);
-    featureLabels += featureLabel(f);
+    if (!f.hit) featureLabels += featureLabel(f);
   }
 
   // Booths from the sheet: redrawn whenever the sheet changes.
@@ -164,7 +166,7 @@
     const open = legendEl.open;
     legendEl.innerHTML = '<summary>Legend</summary><ul>'
       + cats.map(([key, c]) => item(`cat-${key}`, c.legend)).join('')
-      + features.map(f => item(`feat-${f.id}`, f.legend || f.name)).join('')
+      + features.filter(f => !f.hit).map(f => item(`feat-${f.id}`, f.legend || f.name)).join('')
       + '</ul>';
     legendEl.open = open;
   }

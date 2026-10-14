@@ -274,6 +274,13 @@ path.booth, path.feature {
 }
 path.feature { stroke: var(--yellow); stroke-width: 3.5; }
 path.feat-medic { stroke: var(--edge); stroke-width: 2.5; }
+/* The City Hall arrow is already drawn. This spot only catches the tap. */
+path.feature.feat-speakers {
+  fill: transparent;
+  stroke: none;
+  filter: none;
+  pointer-events: all;
+}
 
 .leaflet-control-attribution {
   font-size: 10px;
