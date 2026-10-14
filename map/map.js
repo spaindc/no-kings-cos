@@ -27,11 +27,12 @@
   }).addTo(map);
 
   const parkBox = box(park[0], park[1], park[2] - park[0], park[3] - park[1]);
-  map.fitBounds(parkBox);
+  map.fitBounds(parkBox, { animate: false });
   map.setMinZoom(map.getZoom() - 0.5);
   map.setMaxBounds(box(vx, vy, vw, vh));
   // Opening frame is the part of the park with the tables, stage, and the City Hall arrow.
-  map.fitBounds(box(240, 10, 930, 1000), { padding: [12, 12] });
+  // No animation: a link to a spot must be able to move the view before this settles.
+  map.fitBounds(box(240, 10, 930, 1000), { padding: [12, 12], animate: false });
 
   const labelsSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   labelsSvg.setAttribute('viewBox', viewBox.join(' '));
@@ -150,10 +151,13 @@
     const booth = table && boothByTable[decodeURIComponent(table[1])];
     const feature = !booth && location.hash.match(/^#([a-z]+)$/);
     const layer = booth || (feature && featureById[feature[1]]);
-    if (layer) {
-      map.setView(layer.getCenter(), Math.max(map.getZoom(), 0.5));
-      layer.openPopup();
-    }
+    if (!layer) return;
+    // The opening fitBounds is still moving when a fast load arrives. If it
+    // finishes later it pulls the view back to the whole park and closes the popup.
+    map.stop();
+    const zoom = Math.max(map.getZoom(), 0.5);
+    map.setView(layer.getCenter(), zoom, { animate: false });
+    layer.openPopup();
   }
 
   const legend = L.control({ position: 'bottomleft' });
@@ -181,6 +185,7 @@
   legend.addTo(map);
 
   labelsSvg.innerHTML = featureLabels;
+  openFromHash();
   refresh().then(openFromHash);
   window.addEventListener('hashchange', openFromHash);
   setInterval(refresh, REFRESH_MS);
