@@ -48,7 +48,17 @@ header nav {
   gap: 0.15rem;
   max-width: 40rem;
   margin: 0 auto;
-  padding: 0.15rem 1.25rem 0.4rem;
+  padding: 0.15rem 1.25rem 0;
+}
+
+header .hint {
+  margin: 0;
+  padding: 0.05rem 1rem 0.35rem;
+  text-align: center;
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.25;
 }
 
 nav a {

@@ -38,7 +38,23 @@ header nav {
   max-width: 40rem;
   margin: 0 auto;
   /* The link padding is 0.75rem, so the words start on the same edge as the name and the heading. */
-  padding: 0.15rem 1.25rem 0.2rem 0.5rem;
+  padding: 0.15rem 1.25rem 0 0.5rem;
+}
+
+header .hint {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0.1rem 1.25rem 0.15rem 1.25rem;
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+header .hint a {
+  color: var(--yellow);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 nav a {
