@@ -69,7 +69,7 @@
       label: [346, 822],
     },
     {
-      id: 'aid', name: 'Mutual aid', note: 'Donation drive. Bring kids\' jackets, feminine products, diapers and wipes, or hygiene products. Donations go directly to the community: distributions through the Colorado Springs Mutual Aid & Solidarity Union, the People\'s Grocery, and monthly free stores.', lines: ['Mutual', 'aid'],
+      id: 'aid', name: 'Mutual aid', note: 'Donation drive. Bring kids\' jackets, feminine products, diapers and wipes, toys, hygiene products, or nonperishable food. Donations go directly to the community: distributions through the Colorado Springs Mutual Aid & Solidarity Union, the People\'s Grocery, and monthly free stores.', lines: ['Mutual', 'aid'],
       // Rectangle in the lawn of the marked box: off the diagonal path, short of table 32 and the Nevada tables.
       points: [[770, 270], [860, 270], [860, 370], [770, 370]],
     },

@@ -153,6 +153,17 @@ a:focus-visible {
 
 .leaflet-popup-tip { box-shadow: none; }
 
+/* Opens under the spot when there is no room above it. The tip moves to the top. */
+.leaflet-popup.pop-below {
+  margin-bottom: 0;
+  margin-top: 20px;
+}
+.leaflet-popup.pop-below .leaflet-popup-tip-container {
+  top: 0;
+  margin-top: -20px;
+  transform: rotate(180deg);
+}
+
 .leaflet-popup-content {
   margin: 0.85rem 1.15rem 0.9rem 1rem;
   font-size: 0.95rem;

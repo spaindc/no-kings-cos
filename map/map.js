@@ -41,6 +41,77 @@
 
   const spotLayer = (spot, className) => L.polygon(spot.points.map(ll), { renderer, className });
 
+  // Popups open above the spot. Near the top of the map that runs off the edge
+  // (table 33), and maxBounds stops Leaflet from panning far enough to show it.
+  // Place each popup on the side that fits, and shift it so it stays on the map.
+  const popupOptions = { autoPan: false };
+  const POPUP_PAD = 8;
+  const POPUP_TIP = 20;
+
+  function fitPopup(popup) {
+    const el = popup.getElement();
+    if (!el || !popup.isOpen()) return;
+    const tip = el.querySelector('.leaflet-popup-tip-container');
+    el.classList.remove('pop-below');
+    if (tip) tip.style.marginLeft = '';
+
+    const width = el.offsetWidth;
+    const height = el.offsetHeight;
+    if (!width || !height) return;
+    const anchor = map.latLngToContainerPoint(popup.getLatLng());
+    const size = map.getSize();
+    const offsetY = (popup.options.offset && popup.options.offset[1]) || 7;
+    const baseLeft = -Math.round(width / 2);
+    const baseBottom = -offsetY;
+    const roomAbove = anchor.y - POPUP_PAD;
+    const roomBelow = size.y - anchor.y - POPUP_PAD;
+    const below = height + POPUP_TIP > roomAbove && roomBelow > roomAbove;
+
+    let bottom = baseBottom;
+    if (below) {
+      el.classList.add('pop-below');
+      bottom = baseBottom - height - POPUP_TIP;
+    }
+
+    let left = baseLeft;
+    const popupLeft = anchor.x + left;
+    const popupRight = popupLeft + width;
+    if (popupLeft < POPUP_PAD) left += POPUP_PAD - popupLeft;
+    else if (popupRight > size.x - POPUP_PAD) left -= popupRight - (size.x - POPUP_PAD);
+
+    el.style.left = left + 'px';
+    el.style.bottom = bottom + 'px';
+
+    const mapRect = map.getContainer().getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    const overflowTop = mapRect.top + POPUP_PAD - rect.top;
+    const overflowBottom = rect.bottom - (mapRect.bottom - POPUP_PAD);
+    if (overflowTop > 0 || overflowBottom > 0) {
+      const shift = rect.height > mapRect.height - POPUP_PAD * 2
+        ? overflowTop
+        : (overflowTop > 0 ? overflowTop : -overflowBottom);
+      el.style.bottom = (bottom - shift) + 'px';
+    }
+
+    if (tip) {
+      const shift = left - baseLeft;
+      const minMargin = 6 - width / 2;
+      const maxMargin = width - 46 - width / 2;
+      tip.style.marginLeft = Math.max(minMargin, Math.min(maxMargin, -20 - shift)) + 'px';
+    }
+  }
+
+  let popupFitQueued = false;
+  function queuePopupFit() {
+    if (popupFitQueued) return;
+    popupFitQueued = true;
+    requestAnimationFrame(() => {
+      popupFitQueued = false;
+      const popup = map._popup;
+      if (popup && popup.isOpen()) fitPopup(popup);
+    });
+  }
+
   function textLines([x, y], lines, cls, lineHeight = 12) {
     const top = y - (lines.length - 1) * lineHeight / 2;
     return lines.map((line, i) => `<text class="${cls}" x="${x}" y="${top + i * lineHeight}">${esc(line)}</text>`).join('');
@@ -67,7 +138,7 @@
     const note = f.note ? `<p>${esc(f.note)}</p>` : '';
     const more = f.href ? `<p><a href="${esc(f.href)}">${esc(f.hrefLabel)}</a></p>` : '';
     featureById[f.id] = spotLayer(f, `feature feat-${f.id}`)
-      .bindPopup(`<h2>${esc(f.name)}</h2>${note}${more}`)
+      .bindPopup(`<h2>${esc(f.name)}</h2>${note}${more}`, popupOptions)
       .addTo(map);
     if (!f.hit) featureLabels += featureLabel(f);
   }
@@ -117,7 +188,7 @@
         continue;
       }
       if (boothByTable[g.table]) console.warn(`Table ${g.table} is listed twice; showing ${g.name}`);
-      boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupElement(g)).addTo(booths);
+      boothByTable[g.table] = spotLayer(spot, `booth cat-${g.category}`).bindPopup(popupElement(g), popupOptions).addTo(booths);
       labels += textLines(spot.label, [g.table], `label table-label${spot.big ? ' big' : ''}`);
     }
     labelsSvg.innerHTML = featureLabels + labels;
@@ -185,6 +256,8 @@
   legend.addTo(map);
 
   labelsSvg.innerHTML = featureLabels;
+  map.on('popupopen', queuePopupFit);
+  map.on('move zoom viewreset', queuePopupFit);
   openFromHash();
   refresh().then(openFromHash);
   window.addEventListener('hashchange', openFromHash);

@@ -137,15 +137,6 @@ h1 {
 
 .places a { color: var(--indigo); }
 
-.speakers {
-  margin: 0.55rem 0 0;
-  padding-left: 1.2rem;
-}
-
-.speakers li + li { margin-top: 0.65rem; }
-
-.places .soon { margin-top: 0.85rem; }
-
 .schedule {
   list-style: none;
   margin: 0.55rem 0 0;
@@ -161,15 +152,6 @@ h1 {
 .schedule time {
   flex: 0 0 3.1rem;
   font-weight: 800;
-  color: var(--indigo);
-}
-
-.places .soon,
-.info .soon {
-  font-weight: 800;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--indigo);
 }
 
@@ -235,6 +217,18 @@ h1 {
   color: var(--indigo);
   text-decoration: underline;
   text-underline-offset: 0.12em;
+}
+
+main .truck {
+  margin: 0 0 0.75rem;
+  padding: 0.85rem 1.05rem;
+  background: var(--red);
+  color: #fff;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  text-align: center;
 }
 
 main p { margin: 0.7rem 0; }
